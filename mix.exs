@@ -22,7 +22,7 @@ defmodule Peon.Mixfile do
 
   defp package do
     [files: ~w(lib mix.exs README.md LICENSE UNLICENSE VERSION),
-     contributors: ["Michael Matyi"],
+     maintainers: ["Michael Matyi"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/supernintendo/peon"}]
   end
