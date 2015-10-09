@@ -39,7 +39,7 @@ Unbound variables are allowed and can be bound when read. For example, given the
 
 The following will produce `true`:
 
-```
+```elixir
 {:ok, data} = Peon.from_file("unbound.peon", [name: "Yoshimi P-We", age: 47])
 Map.equal?(data, %{
   name: "Yoshimi P-We",
