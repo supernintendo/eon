@@ -1,5 +1,4 @@
 # Peon
-====
 
 Peon is a simple library for using Elixir maps as a document storage format. Maps are simply saved and loaded as files without the need to encode or decode.
 
