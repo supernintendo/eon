@@ -12,18 +12,7 @@ Map data can be written to and read from files with the `.peon` extension:
 
 ```elixir
 data = %{
-  integer: 1,
-  float: 1.0,
-  number: 0x1F,
-  string: "foo",
-  bool: true,
-  atom: :foo,
-  nothing: nil,
-  list: ["foo", "bar", 1, 2],
-  tuple: {"lorem", "ipsum", 3, 4},
-  map: %{
-    hello => "world"
-  }
+  hello: {"world", 42, :foo}
 }
 filename = "data.peon"
 {:ok, filename} = Peon.to_file(data, filename)
