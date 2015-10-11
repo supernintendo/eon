@@ -41,5 +41,8 @@ Map.equal?(data, %{
 }
 ```
 
+## Disclaimer
+Peon is not as safe as JSON or YML as it could allow for arbitrary executation of source code. Use at your own risk.
+
 ## License
 MIT
