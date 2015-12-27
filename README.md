@@ -1,6 +1,6 @@
 # Peon
 
-Peon (**P**ure **E**lixir **O**bject **N**otation) is a simple library for using Elixir maps as a document storage format. Maps are simply saved and loaded as files without the need to encode or decode.
+Peon (**P**ure **E**lixir **O**bject **N**otation) is a simple library for using Elixir maps as a document storage format. Maps are simply saved as files and evaluated when loaded.
 
 [![Build Status](https://travis-ci.org/supernintendo/peon.svg?branch=master)](https://travis-ci.org/supernintendo/peon)
 [![Hex.pm](https://img.shields.io/hexpm/v/peon.svg?style=flat)](https://hex.pm/packages/peon/1.0.0)
@@ -20,29 +20,30 @@ filename = "data.peon"
 
 ```
 
-Unbound variables are allowed and can be bound when read. For example, given the following file `unbound.peon`:
+## Safety
+
+`from_file` will return `{:error, message}` when attempting to load a file that could execute arbitrary code. Peon traverses a map's AST and rejects it if it finds any expression tuple that doesn't have `:{}` or `%{}` as its first element.
+
+You can bypass this using `Peon.from_file!`. This function also allows passing a keyword list as a second argument, which is used to bind unbound variables found in the loaded file. For example, given the following file `unsafe.peon`:
 
 ```elixir
 %{
   group: :users,
-  name: name,
-  age: age
+  language: String.capitalize(language),
+  name: name
 }
 ```
 
-The following will produce `true`:
+...the following will return `true`:
 
 ```elixir
-{:ok, data} = Peon.from_file("unbound.peon", [name: "Yoshimi P-We", age: 47])
+{:ok, data} = Peon.from_file("unsafe.peon", [name: "José Valim", language: "elixir"])
 Map.equal?(data, %{
-  name: "Yoshimi P-We",
-  age: 47,
-  group: :users
+  group: :users,
+  language: "Elixir",
+  name: "José Valim"
 }
 ```
-
-## Disclaimer
-Peon is not as safe as JSON or YML as it could allow for arbitrary executation of source code. Use at your own risk.
 
 ## License
 MIT
