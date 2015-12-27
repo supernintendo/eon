@@ -10,7 +10,7 @@ defmodule PeonTest.Reading do
   end
 
   test "interpolating values" do
-    {:ok, data} = Peon.from_file "test/fixtures/bindings.peon", [bar: 42]
+    {:ok, data} = Peon.from_file! "test/fixtures/bindings.peon", [bar: 42]
     assert data.foo == 42
   end
 
