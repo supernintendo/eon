@@ -1,6 +1,6 @@
 # Peon
 
-Peon (**P**ure **E**lixir **O**bject **N**otation) is a simple library for using Elixir maps as a document storage format. Maps are simply saved as files and evaluated when loaded.
+Peon (**P**ure **E**lixir **O**bject **N**otation) allows you to use native Elixir data structures as a document storage format.
 
 [![Build Status](https://travis-ci.org/supernintendo/peon.svg?branch=master)](https://travis-ci.org/supernintendo/peon)
 [![Hex.pm](https://img.shields.io/hexpm/v/peon.svg?style=flat)](https://hex.pm/packages/peon/1.0.0)
@@ -8,7 +8,7 @@ Peon (**P**ure **E**lixir **O**bject **N**otation) is a simple library for using
 
 ## Usage
 
-Map data can be written to and read from files with the `.peon` extension:
+Maps can be written to and read from files using `&to_file/2` and `&from_file/1` respectively:
 
 ```elixir
 data = %{
