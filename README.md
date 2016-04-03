@@ -38,7 +38,8 @@ You can bypass this using `Peon.from_file!`. This function also allows passing a
 
 ```elixir
 {:ok, data} = Peon.from_file("unsafe.peon", [name: "José Valim", language: "elixir"])
-Map.equal?(data, %{
+
+Map.equal?(%{
   group: :users,
   language: "Elixir",
   name: "José Valim"
