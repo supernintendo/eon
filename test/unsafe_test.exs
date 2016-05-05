@@ -7,6 +7,6 @@ defmodule PeonTest.Unsafe do
   end
 
   test "loading an unsafe .peon file" do
-    {:ok, data} = Peon.from_file!("test/fixtures/unsafe.peon")
+    {:ok, data} = Peon.from_file_unsafe("test/fixtures/unsafe.peon")
   end
 end

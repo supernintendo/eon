@@ -10,12 +10,12 @@ defmodule PeonTest.Reading do
   end
 
   test "interpolating values" do
-    {:ok, data} = Peon.from_file! "test/fixtures/bindings.peon", [bar: 42]
+    {:ok, data} = Peon.from_file_unsafe("test/fixtures/bindings.peon", [bar: 42])
     assert data.foo == 42
   end
 
   test "different types" do
-    {:ok, data} = Peon.from_file "test/fixtures/types.peon"
+    {:ok, data} = Peon.from_file("test/fixtures/types.peon")
 
     assert is_integer data.integer
     assert is_float data.float
