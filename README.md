@@ -24,7 +24,7 @@ filename = "data.peon"
 
 `from_file` will return `{:error, message}` when attempting to load a file that could execute arbitrary code. Peon traverses a map's AST and rejects it if it finds any expression tuple that doesn't have `:{}` or `%{}` as its first element.
 
-You can bypass this using `Peon.from_file!`. This function also allows passing a keyword list as a second argument, which is used to bind unbound variables found in the loaded file. For example, given the following file `unsafe.peon`:
+You can bypass this using `Peon.from_file_unsafe`. This function also allows passing a keyword list as a second argument, which is used to bind unbound variables found in the loaded file. For example, given the following file `unsafe.peon`:
 
 ```elixir
 %{
@@ -37,7 +37,7 @@ You can bypass this using `Peon.from_file!`. This function also allows passing a
 ...the following will return `true`:
 
 ```elixir
-{:ok, data} = Peon.from_file("unsafe.peon", [name: "José Valim", language: "elixir"])
+{:ok, data} = Peon.from_file_unsafe("unsafe.peon", [name: "José Valim", language: "elixir"])
 
 Map.equal?(%{
   group: :users,
