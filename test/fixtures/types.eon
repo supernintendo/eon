@@ -1,5 +1,5 @@
 %{
-  # .peon files are native Elixir maps.
+  # .eon files are native Elixir maps.
   # They can have comments.
   integer: 1,
   float: 1.0,

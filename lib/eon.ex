@@ -1,4 +1,4 @@
-defmodule Peon do
+defmodule EON do
   def from_file(filename), do: load_file(filename, false, nil)
   def from_file_unsafe(filename), do: load_file(filename, true, [])
   def from_file_unsafe(filename, bindings), do: load_file(filename, true, bindings)
@@ -15,7 +15,7 @@ defmodule Peon do
         {contents, results} = Code.eval_string(file, [])
         {:ok, Map.merge(%{}, contents)}
       true ->
-        {:error, "#{filename} contains unsafe data. Load with Peon.from_file_unsafe to ignore this."}
+        {:error, "#{filename} contains unsafe data. Load with EON.from_file_unsafe to ignore this."}
     end
   end
 

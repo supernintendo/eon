@@ -1,8 +1,8 @@
-defmodule PeonTest.Reading do
+defmodule EONTest.Reading do
   use ExUnit.Case
 
-  test "loading data from a .peon file" do
-    {:ok, data} = Peon.from_file("test/fixtures/basic.peon")
+  test "loading data from an .eon file" do
+    {:ok, data} = EON.from_file("test/fixtures/basic.eon")
     spec = %{
       hello: "world"
     }
@@ -10,12 +10,12 @@ defmodule PeonTest.Reading do
   end
 
   test "interpolating values" do
-    {:ok, data} = Peon.from_file_unsafe("test/fixtures/bindings.peon", [bar: 42])
+    {:ok, data} = EON.from_file_unsafe("test/fixtures/bindings.eon", [bar: 42])
     assert data.foo == 42
   end
 
   test "different types" do
-    {:ok, data} = Peon.from_file("test/fixtures/types.peon")
+    {:ok, data} = EON.from_file("test/fixtures/types.eon")
 
     assert is_integer data.integer
     assert is_float data.float

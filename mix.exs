@@ -1,10 +1,10 @@
-defmodule Peon.Mixfile do
+defmodule EON.Mixfile do
   use Mix.Project
 
   @version File.read!("VERSION") |> String.strip
 
   def project do
-    [app: :peon,
+    [app: :eon,
      version: @version,
      elixir: "~> 1.0",
      description: "Use Elixir maps as a document storage format.",
@@ -23,7 +23,7 @@ defmodule Peon.Mixfile do
   defp package do
     [files: ~w(lib mix.exs README.md LICENSE UNLICENSE VERSION),
      maintainers: ["Michael Matyi"],
-     licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/supernintendo/peon"}]
+     licenses: ["Apache License 2.0"],
+     links: %{"GitHub" => "https://github.com/supernintendo/eon"}]
   end
 end
