@@ -3,10 +3,16 @@
 EON (**E**lixir **O**bject **N**otation) allows you to use Elixir data structures as a document storage format.
 
 [![Build Status](https://travis-ci.org/supernintendo/peon.svg?branch=master)](https://travis-ci.org/supernintendo/eon)
+[![Hex.pm](https://img.shields.io/hexpm/v/eon.svg?style=flat)](https://hex.pm/packages/eon/3.0.0)
+[![Hex.pm](https://img.shields.io/hexpm/dt/eon.svg?style=flat)](https://hex.pm/packages/eon/3.0.0)
 
 ## Usage
 
-Maps can be written to and read from files using `&to_file/2` and `&from_file/1` respectively:
+Add to your mix.exs:
+
+`{:eon, "~> 3.0"}`
+
+Use `&to_file/2` and `&from_file/1` to write and read maps respectively:
 
 ```elixir
 data = %{
