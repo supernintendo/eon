@@ -1,10 +1,8 @@
-# Peon
+# EON
 
-Peon (**P**ure **E**lixir **O**bject **N**otation) allows you to use native Elixir data structures as a document storage format.
+EON (**E**lixir **O**bject **N**otation) allows you to use Elixir data structures as a document storage format.
 
-[![Build Status](https://travis-ci.org/supernintendo/peon.svg?branch=master)](https://travis-ci.org/supernintendo/peon)
-[![Hex.pm](https://img.shields.io/hexpm/v/peon.svg?style=flat)](https://hex.pm/packages/peon/1.0.0)
-[![Hex.pm](https://img.shields.io/hexpm/dt/peon.svg?style=flat)](https://hex.pm/packages/peon/1.0.0)
+[![Build Status](https://travis-ci.org/supernintendo/peon.svg?branch=master)](https://travis-ci.org/supernintendo/eon)
 
 ## Usage
 
@@ -14,17 +12,17 @@ Maps can be written to and read from files using `&to_file/2` and `&from_file/1`
 data = %{
   hello: {"world", 42, :foo}
 }
-filename = "data.peon"
-{:ok, filename} = Peon.to_file(data, filename)
-{:ok, data} = Peon.from_file("data.peon")
+filename = "data.eon"
+{:ok, filename} = EON.to_file(data, filename)
+{:ok, data} = EON.from_file("data.eon")
 
 ```
 
 ## Safety
 
-`from_file` will return `{:error, message}` when attempting to load a file that could execute arbitrary code. Peon traverses a map's AST and rejects it if it finds any expression tuple that doesn't have `:{}` or `%{}` as its first element.
+`from_file` will return an error tuple when attempting to load a file that could execute arbitrary code. Any map which contains an expression tuple starting with any value other than `:{}` or `%{}` is rejected.
 
-You can bypass this using `Peon.from_file_unsafe`. This function also allows passing a keyword list as a second argument, which is used to bind unbound variables found in the loaded file. For example, given the following file `unsafe.peon`:
+You can bypass this using `EON.from_file_unsafe`. This function also allows passing a keyword list as a second argument, which binds unbound variables in the loaded file. For example, given the following file `unsafe.eon`:
 
 ```elixir
 %{
@@ -37,7 +35,7 @@ You can bypass this using `Peon.from_file_unsafe`. This function also allows pas
 ...the following will return `true`:
 
 ```elixir
-{:ok, data} = Peon.from_file_unsafe("unsafe.peon", [name: "José Valim", language: "elixir"])
+{:ok, data} = EON.from_file_unsafe("unsafe.eon", [name: "José Valim", language: "elixir"])
 
 Map.equal?(%{
   group: :users,
@@ -47,4 +45,4 @@ Map.equal?(%{
 ```
 
 ## License
-MIT
+[Apache License 2.0](LICENSE.md)
