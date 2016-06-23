@@ -26,9 +26,9 @@ filename = "data.eon"
 
 ## Safety
 
-`from_file` will return an error tuple when attempting to load a file that could execute arbitrary code. Any map which contains an expression tuple starting with any value other than `:{}` or `%{}` is rejected.
+`from_file` will return an error tuple when attempting to load a .eon file that could execute arbitrary code. Loaded files produce an AST which is considered unsafe if at least one of the AST's expression tuples contains a `:{}` or `%{}` as its first element. This effectively limits loaded files to native Elixir data structures and constant values (numbers, atoms and so on).
 
-You can bypass this using `EON.from_file_unsafe`. This function also allows passing a keyword list as a second argument, which binds unbound variables in the loaded file. For example, given the following file `unsafe.eon`:
+You can bypass the safety check using `EON.from_file_unsafe`. This function also takes a keyword list as its second argument. Unbound variables will be bound according to the key value pairs within this list. For example, given the following file `unsafe.eon`:
 
 ```elixir
 %{
