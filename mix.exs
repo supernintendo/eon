@@ -21,7 +21,7 @@ defmodule EON.Mixfile do
   end
 
   defp package do
-    [files: ~w(lib mix.exs README.md LICENSE UNLICENSE VERSION),
+    [files: ~w(lib mix.exs README.md LICENSE VERSION),
      maintainers: ["Michael Matyi"],
      licenses: ["Apache"],
      links: %{"GitHub" => "https://github.com/supernintendo/eon"}]
