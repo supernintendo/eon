@@ -9,10 +9,10 @@ defmodule EON do
 
     cond do
       allow_unsafe ->
-        {contents, results} = Code.eval_string(file, bindings)
+        {contents, _results} = Code.eval_string(file, bindings)
         {:ok, Map.merge(%{}, contents)}
       safe ->
-        {contents, results} = Code.eval_string(file, [])
+        {contents, _results} = Code.eval_string(file, [])
         {:ok, Map.merge(%{}, contents)}
       true ->
         {:error, "#{filename} contains unsafe data. Load with EON.from_file_unsafe to ignore this."}
@@ -38,7 +38,7 @@ defmodule EON do
 
   def is_safe?(value) do
     case value do
-      {key, {expression, line, value}} ->
+      {_key, {expression, _line, value}} ->
         if expression != :{} and expression != :%{} do
           false
         else
@@ -46,11 +46,11 @@ defmodule EON do
           |> Enum.filter(&(is_tuple(&1)))
           |> Enum.map(&is_safe?/1)
         end
-      {key, value} when is_list(value) ->
+      {_key, value} when is_list(value) ->
         only_tuples = value |> Enum.filter(&(is_tuple(&1)))
         results = only_tuples |> Enum.map(&is_safe?/1)
         Enum.all?(results, &(&1))
-      {expression, line, value} ->
+      {expression, _line, _value} ->
         expression == :{} or expression == :%{}
       _ ->
         true

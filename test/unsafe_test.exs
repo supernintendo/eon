@@ -7,6 +7,6 @@ defmodule EONTest.Unsafe do
   end
 
   test "loading an unsafe .eon file" do
-    {:ok, data} = EON.from_file_unsafe("test/fixtures/unsafe.eon")
+    {:ok, _data} = EON.from_file_unsafe("test/fixtures/unsafe.eon")
   end
 end
