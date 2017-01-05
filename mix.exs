@@ -17,7 +17,10 @@ defmodule EON.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:earmark, ">= 0.0.0", only: :dev},
+      {:ex_doc, "~> 0.10", only: :dev}
+    ]
   end
 
   defp package do
