@@ -1,3 +1,0 @@
-%{
-  did_you_know: IO.puts("Arbitrary code can be executed when loading an .eon file with `.from_file_unsafe`")
-}

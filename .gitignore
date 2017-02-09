@@ -3,3 +3,4 @@
 erl_crash.dump
 *.ez
 *.temp.eon
+.DS_Store
