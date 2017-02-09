@@ -7,7 +7,7 @@ defmodule Eon.Mixfile do
     [
       app: :eon,
       version: @version,
-      elixir: "~> 1.0",
+      elixir: "~> 1.4.0",
       description: "Use Elixir maps as a document storage format.",
       deps: deps(),
       package: package()
