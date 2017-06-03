@@ -29,6 +29,86 @@ defmodule Eon do
   }
 
   @doc """
+  Takes a string, expecting the contents to be a
+  single map that executes no arbitrary code. Returns a
+  tuple which contains `:ok` or `:error` as the first
+  element and the result or error message respectively.
+
+  ## Examples
+
+      iex> Eon.read("%{hello: \"world\"}")
+      {:ok, %{hello: "world"}}
+
+      iex> Eon.read("%{num: Enum.random(0..100)}")
+      {:error, :unsafe}
+
+  """
+  def from_string(string) when is_bitstring(string) do
+    process_body({string, false, %{}})
+  end
+
+  @doc """
+  Same as from_string/1 except it returns the result
+  rather than an `:ok` tuple containing it. In the case
+  of an error, an exception is raised.
+
+  ## Examples
+
+      iex> Eon.read("%{hello: \"world\"}")
+      {:ok, %{hello: "world"}}
+
+      iex> Eon.read("%{num: Enum.random(0..100)}")
+      ** (Eon.Error) File results in code execution. Use Eon.read_unsafe! to bypass.
+
+  """
+  def from_string!(string) when is_bitstring(string) do
+    case from_string(string) do
+      {:ok, result} -> result
+      {:error, error} -> raise_error(error)
+    end
+  end
+
+  @doc """
+  Same as `from_string/1` except allows arbitrary code
+  execution. This effectively bypasses the step which
+  prohibits the execution of Elixir code containing
+  potentially unsafe data structures.
+  """
+  def from_string_unsafe(string) when is_bitstring(string) do
+    from_string_unsafe(%{}, string)
+  end
+  @doc """
+  Same as `from_string_unsafe/1` except it takes a map as
+  the first argument and pushes the filename to the second.
+  Unbound variables within the loaded file that match a
+  key within the passed map will be replaced with the
+  corresponding value.
+  """
+  def from_string_unsafe(bindings, string) when is_map(bindings) and is_bitstring(string) do
+    process_body({string, true, bindings})
+  end
+
+  @doc """
+  Same as `from_string_unsafe/1` except it returns the result
+  rather than an `:ok` tuple containing it. In the case of an
+  error, an exception is raised.
+  """
+  def from_string_unsafe!(string) when is_bitstring(string) do
+    from_string_unsafe!(%{}, string)
+  end
+  @doc """
+  Same as `from_string_unsafe/2` except it returns the result
+  rather than an `:ok` tuple containing it. In the case of an
+  error, an exception is raised.
+  """
+  def from_string_unsafe!(bindings, string) when is_map(bindings) and is_bitstring(string) do
+    case from_string_unsafe(bindings, string) do
+      {:ok, result} -> result
+      {:error, error} -> raise_error(error)
+    end
+  end
+
+  @doc """
   Loads a file, expecting a file with a single map
   that executes no arbitrary code. Returns a tuple
   which contains `:ok` or `:error` as the first element
@@ -108,7 +188,7 @@ defmodule Eon do
   an exception is raised.
   """
   def read_unsafe!(bindings, filename) when is_map(bindings) and is_bitstring(filename) do
-    case read_unsafe(filename, bindings) do
+    case read_unsafe(bindings, filename) do
       {:ok, result} -> result
       {:error, error} -> raise_error(error)
     end
@@ -172,20 +252,20 @@ defmodule Eon do
 
   defp read_file(filename, allow_unsafe, bindings) do
     case File.read(filename) do
-      {:ok, file}     -> process_file({file, allow_unsafe, bindings})
+      {:ok, file}     -> process_body({file, allow_unsafe, bindings})
       {:error, error} -> {:error, error}
       _               -> {:error, :unknown}
     end
   end
 
-  defp process_file({file, _allow_unsafe = true, bindings}) do
-    case Code.eval_string(file, Enum.map(bindings, &(&1))) do
+  defp process_body({body, _allow_unsafe = true, bindings}) do
+    case Code.eval_string(body, Enum.map(bindings, &(&1))) do
       {contents, _results} -> {:ok, Map.merge(%{}, contents)}
       _ -> {:error, :eval}
     end
   end
 
-  defp process_file({file, _, _bindings}) do
+  defp process_body({file, _, _bindings}) do
     case check_if_safe(file) do
       true ->
         {contents, _results} = Code.eval_string(file, [])
@@ -196,11 +276,15 @@ defmodule Eon do
   end
 
   defp check_if_safe(file) do
-    {:ok, contents} = Code.string_to_quoted(file)
-    elem(contents, 2)
-    |> Enum.map(&is_safe?/1)
-    |> List.flatten
-    |> Enum.all?(&(&1))
+    case Code.string_to_quoted(file) do
+      {:ok, {_type, _line, contents}} when is_list(contents) ->
+        contents
+        |> Enum.map(&is_safe?/1)
+        |> List.flatten
+        |> Enum.all?(&(&1))
+      _ ->
+        false
+    end
   end
 
   defp is_safe?(value) do
